@@ -55,11 +55,11 @@ init {
   }
   print("[H2] DEBUG: found map name at " + mapNamePtr.ToString("X"));
   vars.mapName = new StringWatcher(new DeepPointer(mapNamePtr), ReadStringType.ASCII, 40);
-  // vars.cltime = new MemoryWatcher<double>(new DeepPointer(mapNamePtr - 9720 + 1464));
+  vars.cltime = new MemoryWatcher<double>(new DeepPointer(mapNamePtr - 9720 + 1464));
   vars.intermission = new MemoryWatcher<int>(new DeepPointer(mapNamePtr - 9720 + 1412));
   
   vars.watchList = new MemoryWatcherList() {
-    // vars.cltime,
+    vars.cltime,
     vars.mapName,
     vars.intermission
   };
@@ -89,4 +89,8 @@ reset {
 
 start {
   return vars.mapName.Current != "";
+}
+
+gameTime {
+  return TimeSpan.FromSeconds(vars.cltime.Current);
 }
